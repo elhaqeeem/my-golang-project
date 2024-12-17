@@ -28,7 +28,7 @@ func findAvailablePort() (string, error) {
 func main() {
 	// Inisialisasi Gin
 	r := gin.Default()
-
+	gin.SetMode(gin.ReleaseMode)
 	// Route HTTP/3 utama
 	r.GET("/", func(c *gin.Context) {
 		c.String(http.StatusOK, "Hello HTTP/3!")
