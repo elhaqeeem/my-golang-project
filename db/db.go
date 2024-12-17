@@ -4,8 +4,8 @@ import (
 	"database/sql"
 	"log"
 
+	"github.com/elhaqeeem/my-golang-project/config"
 	_ "github.com/lib/pq" // PostgreSQL driver
-	"github.com/my-golang-project/config"
 )
 
 var DB *sql.DB

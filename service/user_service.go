@@ -1,7 +1,7 @@
 package service
 
 import (
-	"github.com/my-golang-project/repository"
+	"github.com/elhaqeeem/my-golang-project/repository"
 )
 
 // User struct untuk model user

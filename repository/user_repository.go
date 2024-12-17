@@ -3,8 +3,8 @@ package repository
 import (
 	"log"
 
-	"github.com/my-golang-project/db"
-	"github.com/my-golang-project/service"
+	"github.com/elhaqeeem/my-golang-project/db"
+	"github.com/elhaqeeem/my-golang-project/service"
 )
 
 // GetUsers untuk mendapatkan semua user

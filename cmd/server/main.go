@@ -4,10 +4,10 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/elhaqeeem/my-golang-project/config"
+	"github.com/elhaqeeem/my-golang-project/db"
+	"github.com/elhaqeeem/my-golang-project/router"
 	"github.com/gin-gonic/gin"
-	"github.com/my-golang-project/config"
-	"github.com/my-golang-project/db"
-	"github.com/my-golang-project/router"
 )
 
 func main() {

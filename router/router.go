@@ -1,8 +1,8 @@
 package router
 
 import (
+	"github.com/elhaqeeem/my-golang-project/controller"
 	"github.com/gin-gonic/gin"
-	"github.com/my-golang-project/controller"
 )
 
 // SetupRoutes untuk mengonfigurasi rute API

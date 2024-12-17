@@ -3,8 +3,8 @@ package controller
 import (
 	"net/http"
 
+	"github.com/elhaqeeem/my-golang-project/service"
 	"github.com/gin-gonic/gin"
-	"github.com/my-golang-project/service"
 )
 
 // GetUsers untuk mengambil semua user
