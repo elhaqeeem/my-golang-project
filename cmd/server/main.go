@@ -25,8 +25,8 @@ func main() {
 	// router.SetupRoutes(r) // Pastikan Anda mengatur routes jika diperlukan
 
 	// Mengambil sertifikat dan kunci privat dari environment variables
-	certPEM := os.Getenv("CERT_PEM")
-	keyPEM := os.Getenv("KEY_PEM")
+	certPEM := os.Getenv("secret.CERT_PEM")
+	keyPEM := os.Getenv("secret.KEY_PEM")
 
 	if certPEM == "" || keyPEM == "" {
 		log.Fatal("Sertifikat atau kunci privat tidak ditemukan dalam environment variables")
