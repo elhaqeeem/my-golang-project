@@ -4,11 +4,11 @@ import (
 	"log"
 
 	"github.com/elhaqeeem/my-golang-project/db"
-	"github.com/elhaqeeem/my-golang-project/service"
+	"github.com/elhaqeeem/my-golang-project/model"
 )
 
 // GetUsers untuk mendapatkan semua user
-func GetUsers() ([]service.User, error) {
+func GetUsers() ([]model.User, error) {
 	rows, err := db.DB.Query("SELECT id, name, email FROM users")
 	if err != nil {
 		log.Fatal("Error executing query:", err)
@@ -16,9 +16,9 @@ func GetUsers() ([]service.User, error) {
 	}
 	defer rows.Close()
 
-	var users []service.User
+	var users []model.User
 	for rows.Next() {
-		var user service.User
+		var user model.User
 		if err := rows.Scan(&user.ID, &user.Name, &user.Email); err != nil {
 			log.Fatal("Error scanning row:", err)
 			return nil, err
@@ -29,8 +29,8 @@ func GetUsers() ([]service.User, error) {
 }
 
 // GetUserByID untuk mendapatkan user berdasarkan ID
-func GetUserByID(id string) (service.User, error) {
-	var user service.User
+func GetUserByID(id string) (model.User, error) {
+	var user model.User
 	err := db.DB.QueryRow("SELECT id, name, email FROM users WHERE id = $1", id).Scan(&user.ID, &user.Name, &user.Email)
 	if err != nil {
 		return user, err
@@ -39,7 +39,7 @@ func GetUserByID(id string) (service.User, error) {
 }
 
 // CreateUser untuk menambahkan user baru
-func CreateUser(user service.User) (service.User, error) {
+func CreateUser(user model.User) (model.User, error) {
 	err := db.DB.QueryRow("INSERT INTO users (name, email) VALUES ($1, $2) RETURNING id", user.Name, user.Email).Scan(&user.ID)
 	if err != nil {
 		return user, err

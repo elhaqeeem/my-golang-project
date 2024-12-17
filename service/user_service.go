@@ -1,27 +1,21 @@
 package service
 
 import (
+	"github.com/elhaqeeem/my-golang-project/model"
 	"github.com/elhaqeeem/my-golang-project/repository"
 )
 
-// User struct untuk model user
-type User struct {
-	ID    int    `json:"id"`
-	Name  string `json:"name"`
-	Email string `json:"email"`
-}
-
 // GetAllUsers untuk mendapatkan semua user
-func GetAllUsers() ([]User, error) {
+func GetAllUsers() ([]model.User, error) {
 	return repository.GetUsers()
 }
 
 // GetUserByID untuk mendapatkan user berdasarkan ID
-func GetUserByID(id string) (User, error) {
+func GetUserByID(id string) (model.User, error) {
 	return repository.GetUserByID(id)
 }
 
 // CreateUser untuk membuat user baru
-func CreateUser(user User) (User, error) {
+func CreateUser(user model.User) (model.User, error) {
 	return repository.CreateUser(user)
 }
