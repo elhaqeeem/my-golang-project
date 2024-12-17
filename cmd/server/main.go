@@ -29,7 +29,7 @@ func main() {
 	router.SetupRoutes(r)
 
 	// Jalankan server dengan HTTP/3
-	err := r.RunTLS(":8080", "cert.pem", "key.pem") // Port dan path sertifikat
+	err := r.RunTLS(":8080", "otp", "keyotp") // Port dan path sertifikat
 	if err != nil {
 		log.Fatal("Error starting server:", err)
 	}
