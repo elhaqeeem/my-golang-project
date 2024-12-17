@@ -3,6 +3,7 @@ package controller
 import (
 	"net/http"
 
+	"github.com/elhaqeeem/my-golang-project/model" // Mengimpor model.User
 	"github.com/elhaqeeem/my-golang-project/service"
 	"github.com/gin-gonic/gin"
 )
@@ -30,7 +31,7 @@ func GetUserByID(c *gin.Context) {
 
 // CreateUser untuk membuat user baru
 func CreateUser(c *gin.Context) {
-	var user service.User
+	var user model.User // Menggunakan model.User di sini
 	if err := c.ShouldBindJSON(&user); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
