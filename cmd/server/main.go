@@ -30,8 +30,8 @@ func main() {
 	router.SetupRoutes(r)
 
 	// Sertifikat dan kunci privat (ganti dengan path file Anda)
-	certFile := "CERT_PEM"
-	keyFile := "KEY.PEM"
+	certFile := "secret.CERT_PEM"
+	keyFile := "secret.KEY.PEM"
 
 	// Konfigurasi server HTTP/3
 	h3Server := &http3.Server{
