@@ -8,6 +8,7 @@ import (
 	"github.com/elhaqeeem/my-golang-project/db"
 	"github.com/elhaqeeem/my-golang-project/router"
 	"github.com/gin-gonic/gin"
+	"github.com/quic-go/quic-go/http3"
 )
 
 func main() {
@@ -20,17 +21,28 @@ func main() {
 	// Inisialisasi Gin
 	r := gin.Default()
 
-	// Setup HTTP/3 jika diperlukan
-	r.Any("/", func(c *gin.Context) {
+	// Route HTTP/3 utama
+	r.GET("/", func(c *gin.Context) {
 		c.String(http.StatusOK, "Hello HTTP/3!")
 	})
 
 	// Setup routes
 	router.SetupRoutes(r)
 
-	// Jalankan server dengan HTTP/3
-	err := r.RunTLS(":8080", "otp", "keyotp") // Port dan path sertifikat
+	// Sertifikat dan kunci privat (ganti dengan path file Anda)
+	certFile := "cert.pem"
+	keyFile := "key.pem"
+
+	// Konfigurasi server HTTP/3
+	h3Server := &http3.Server{
+		Addr:    ":8080",
+		Handler: r,
+	}
+
+	// Jalankan server dengan HTTP/3 (QUIC)
+	log.Println("Starting server on https://localhost:8080 with HTTP/3 support...")
+	err := h3Server.ListenAndServeTLS(certFile, keyFile)
 	if err != nil {
-		log.Fatal("Error starting server:", err)
+		log.Fatal("Error starting HTTP/3 server:", err)
 	}
 }
