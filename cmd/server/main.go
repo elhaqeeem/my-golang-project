@@ -3,20 +3,15 @@ package main
 import (
 	"log"
 	"net/http"
+	"os"
 
-	"github.com/elhaqeeem/my-golang-project/config"
-	"github.com/elhaqeeem/my-golang-project/db"
-	"github.com/elhaqeeem/my-golang-project/router"
 	"github.com/gin-gonic/gin"
 	"github.com/quic-go/quic-go/http3"
 )
 
 func main() {
 	// Load konfigurasi
-	config.LoadConfig()
-
-	// Inisialisasi database
-	db.InitDB()
+	// config.LoadConfig() // Pastikan Anda memuat konfigurasi jika diperlukan
 
 	// Inisialisasi Gin
 	r := gin.Default()
@@ -27,11 +22,15 @@ func main() {
 	})
 
 	// Setup routes
-	router.SetupRoutes(r)
+	// router.SetupRoutes(r) // Pastikan Anda mengatur routes jika diperlukan
 
-	// Sertifikat dan kunci privat (ganti dengan path file Anda)
-	certFile := "secret.CERT_PEM"
-	keyFile := "secret.KEY.PEM"
+	// Mengambil sertifikat dan kunci privat dari environment variables
+	certPEM := os.Getenv("CERT_PEM")
+	keyPEM := os.Getenv("KEY_PEM")
+
+	if certPEM == "" || keyPEM == "" {
+		log.Fatal("Sertifikat atau kunci privat tidak ditemukan dalam environment variables")
+	}
 
 	// Konfigurasi server HTTP/3
 	h3Server := &http3.Server{
@@ -41,7 +40,7 @@ func main() {
 
 	// Jalankan server dengan HTTP/3 (QUIC)
 	log.Println("Starting server on https://localhost:8080 with HTTP/3 support...")
-	err := h3Server.ListenAndServeTLS(certFile, keyFile)
+	err := h3Server.ListenAndServeTLS(certPEM, keyPEM)
 	if err != nil {
 		log.Fatal("Error starting HTTP/3 server:", err)
 	}
