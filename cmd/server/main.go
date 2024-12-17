@@ -2,13 +2,28 @@ package main
 
 import (
 	"crypto/tls"
+	"fmt"
 	"log"
+	"net"
 	"net/http"
 	"os"
 
 	"github.com/gin-gonic/gin"
 	"github.com/quic-go/quic-go/http3"
 )
+
+// Cari port yang tersedia di sistem
+func findAvailablePort() (string, error) {
+	// Membuka listener di port acak
+	listener, err := net.Listen("tcp", ":0") // Port 0 berarti sistem akan memilih port bebas
+	if err != nil {
+		return "", fmt.Errorf("gagal menemukan port yang tersedia: %v", err)
+	}
+	defer listener.Close()
+
+	// Mengembalikan port yang digunakan listener
+	return listener.Addr().String(), nil
+}
 
 func main() {
 	// Inisialisasi Gin
@@ -33,17 +48,36 @@ func main() {
 		log.Fatalf("Gagal memuat pasangan sertifikat dan kunci: %v", err)
 	}
 
+	// Menemukan port yang tersedia
+	port, err := findAvailablePort()
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	// Konfigurasi server HTTP/3
 	h3Server := &http3.Server{
-		Addr: ":8080",
-		TLSConfig: &tls.Config{
-			Certificates: []tls.Certificate{cert},
-		},
-		Handler: r,
+		Addr:      port, // Gunakan port yang ditemukan
+		TLSConfig: &tls.Config{Certificates: []tls.Certificate{cert}},
+		Handler:   r,
 	}
 
 	// Jalankan server dengan HTTP/3 (QUIC)
-	log.Println("Starting server on https://localhost:8080 with HTTP/3 support...")
+	log.Printf("Starting server on %s with HTTP/3 support...\n", port)
+
+	// Health check TCP
+	// Memeriksa jika server dapat menerima koneksi TCP di port yang ditemukan
+	go func() {
+		for {
+			conn, err := net.Dial("tcp", port)
+			if err == nil {
+				conn.Close()
+				log.Printf("Health check sukses di %s\n", port)
+				break
+			}
+		}
+	}()
+
+	// Jalankan server HTTP/3
 	err = h3Server.ListenAndServe()
 	if err != nil {
 		log.Fatal("Error starting HTTP/3 server:", err)
