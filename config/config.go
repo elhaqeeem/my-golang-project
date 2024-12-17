@@ -3,8 +3,6 @@ package config
 import (
 	"log"
 	"os"
-
-	"github.com/joho/godotenv"
 )
 
 // Database URL
@@ -13,10 +11,10 @@ var DB_URI string
 // LoadConfig mengatur variabel lingkungan
 func LoadConfig() {
 	// Memuat variabel dari file .env
-	err := godotenv.Load()
-	if err != nil {
-		log.Fatalf("Error loading .env file: %v", err)
-	}
+	//err := godotenv.Load()
+	//if err != nil {
+	//	log.Fatalf("Error loading .env file: %v", err)
+	//}
 
 	// Ambil DATABASE_URL dari environment
 	DB_URI = os.Getenv("DATABASE_URL")
